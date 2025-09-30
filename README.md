@@ -12,7 +12,7 @@ go run ./cmd/katanasvc
 go test ./...
 
 # 3) Benchmarks
-go test -bench=. -run=^$
+go test -bench=Benchmark ./internal/mathutil
 ```
 
 > Tip: Keep the terminal and Copilot Chat open side by side.
@@ -55,15 +55,4 @@ go test -bench=. -run=^$
 ├── LICENSE
 ├── Makefile
 └── README.md
-```
-
-## Push to your GitHub
-```bash
-git init
-git add .
-git commit -m "feat: seed Copilot Kata repo"
-# Replace the URL with your repo
-git branch -M main
-git remote add origin https://github.com/<you>/copilot-kata-go.git
-git push -u origin main
 ```
