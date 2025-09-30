@@ -1,0 +1,15 @@
+# Binaries
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+
+# Output
+bin/
+dist/
+
+# IDE
+.vscode/
+.idea/
+*.iml

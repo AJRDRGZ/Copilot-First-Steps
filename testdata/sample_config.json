@@ -1,0 +1,10 @@
+{
+  "appName": "Kata App — México Demo",
+  "maxUsers": 23,
+  "features": [
+    "auth",
+    "import",
+    "export"
+  ],
+  "threshold": 0.72
+}
