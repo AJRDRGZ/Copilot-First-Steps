@@ -1,8 +1,8 @@
 package strings
 
 import (
-\t"regexp"
-\t"strings"
+	"regexp"
+	"strings"
 )
 
 var nonAlnum = regexp.MustCompile(`[^a-z0-9\-]+`)
@@ -11,22 +11,24 @@ var nonAlnum = regexp.MustCompile(`[^a-z0-9\-]+`)
 // NOTE: intentionally limited: accents/diacritics are not handled.
 // TODO: Handle accents (e.g., "México" -> "mexico") and non-Latin scripts.
 func Slugify(s string) string {
-\ts = strings.TrimSpace(s)
-\ts = strings.ToLower(s)
-\ts = strings.ReplaceAll(s, "—", "-")
-\ts = strings.ReplaceAll(s, "–", "-")
-\ts = strings.ReplaceAll(s, "_", "-")
-\ts = strings.ReplaceAll(s, " ", "-")
+	s = strings.TrimSpace(s)
+	s = strings.ToLower(s)
 
-\t// Collapse multiple dashes
-\tfor strings.Contains(s, "--") {
-\t\ts = strings.ReplaceAll(s, "--", "-")
-\t}
+	// Replace various characters with dashes
+	replacements := []string{"—", "–", "_", " "}
+	for _, char := range replacements {
+		s = strings.ReplaceAll(s, char, "-")
+	}
 
-\t// Remove anything not a-z, 0-9, or dash
-\ts = nonAlnum.ReplaceAllString(s, "")
+	// Collapse multiple dashes
+	for strings.Contains(s, "--") {
+		s = strings.ReplaceAll(s, "--", "-")
+	}
 
-\t// Trim leading/trailing dashes again, just in case
-\ts = strings.Trim(s, "-")
-\treturn s
+	// Remove anything not a-z, 0-9, or dash
+	s = nonAlnum.ReplaceAllString(s, "")
+
+	// Trim leading/trailing dashes again, just in case
+	s = strings.Trim(s, "-")
+	return s
 }
