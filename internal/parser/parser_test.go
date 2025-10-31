@@ -7,16 +7,16 @@ import (
 )
 
 func TestParseConfig_Sample(t *testing.T) {
-	p := filepath.Join("..", "..", "testdata", "sample_config.json")
-	b, err := os.ReadFile(p)
+	configPath := filepath.Join("..", "..", "testdata", "sample_config.json")
+	jsonData, err := os.ReadFile(configPath)
 	if err != nil {
 		t.Fatalf("read: %v", err)
 	}
-	cfg, err := ParseConfig(b)
+	config, err := ParseConfig(jsonData)
 	if err != nil {
 		t.Fatalf("parse: %v", err)
 	}
-	if cfg.AppName == "" {
+	if config.AppName == "" {
 		t.Errorf("AppName should not be empty")
 	}
 }
