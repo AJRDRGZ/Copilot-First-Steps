@@ -6,12 +6,15 @@ import (
 	"strings"
 )
 
+// User represents a user in the system with an ID, name, and email address.
 type User struct {
-	ID    int
-	Name  string
-	Email string
+	ID    int    // unique identifier for the user
+	Name  string // full name of the user
+	Email string // email address of the user
 }
 
+// emailRe is a regular expression for basic email validation.
+// Note: This is a simplified regex and may not cover all valid email formats.
 var emailRe = regexp.MustCompile(`^[^@\s]+@[^@\s]+\.[^@\s]+$`)
 
 // Validate checks basic fields. Intentionally simplistic to give Copilot room.
