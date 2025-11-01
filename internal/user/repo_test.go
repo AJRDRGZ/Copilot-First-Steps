@@ -117,7 +117,7 @@ func Test_Create_UserWithExistingID_OverwritesID(t *testing.T) {
 	}
 }
 
-func Test_Create_EmptyUser_StillAssignsID(t *testing.T) {
+func Test_Create_EmptyUser_ReturnsValidationError(t *testing.T) {
 	// Arrange
 	repo := NewInMemoryRepo()
 	user := User{} // Empty user
@@ -125,12 +125,15 @@ func Test_Create_EmptyUser_StillAssignsID(t *testing.T) {
 	// Act
 	result, err := repo.Create(user)
 
-	// Assert
-	if err != nil {
-		t.Errorf("Create() returned error: %v", err)
+	// Assert - Should now return validation error
+	if err == nil {
+		t.Error("Create() expected validation error for empty user, got nil")
 	}
-	if result.ID != 1 {
-		t.Errorf("Create() ID = %d, want 1", result.ID)
+	if err.Error() != "name is required" {
+		t.Errorf("Create() error = %q, want %q", err.Error(), "name is required")
+	}
+	if result.ID != 0 {
+		t.Errorf("Create() ID = %d, want 0 for failed validation", result.ID)
 	}
 }
 

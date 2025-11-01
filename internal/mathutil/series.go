@@ -1,11 +1,24 @@
 package mathutil
 
+import "errors"
+
 const (
 	// Fibonacci sequence constants
 	FibonacciBaseCase0 = 0 // F(0) = 0
 	FibonacciBaseCase1 = 1 // F(1) = 1
 	FibonacciZeroValue = 0 // Return value for negative inputs
+
+	// Security limits to prevent DoS attacks and integer overflow
+	MaxFibonacciInput = 93 // Maximum safe input for int64 Fibonacci calculation
 )
+
+// validateFibonacciInput checks if the input is within safe bounds
+func validateFibonacciInput(n int) error {
+	if n > MaxFibonacciInput {
+		return errors.New("input too large: risk of integer overflow or DoS attack")
+	}
+	return nil
+}
 
 // Fibonacci returns the nth Fibonacci number using naive recursion.
 // This implementation is intentionally naive (recursive) to invite refactoring.
@@ -25,9 +38,13 @@ func Fibonacci(n int) int {
 
 // FibonacciIterative returns the nth Fibonacci number using iteration.
 // Time complexity: O(n), Space complexity: O(1)
+// Returns 0 for inputs that exceed MaxFibonacciInput to prevent DoS attacks.
 func FibonacciIterative(n int) int {
 	if n < 0 {
 		return FibonacciZeroValue
+	}
+	if err := validateFibonacciInput(n); err != nil {
+		return FibonacciZeroValue // Fail safely by returning 0
 	}
 	if n == 0 {
 		return FibonacciBaseCase0

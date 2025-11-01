@@ -5,14 +5,31 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 
 	"copilotkata/internal/mathutil"
 	"copilotkata/internal/parser"
 	"copilotkata/internal/strings"
 )
 
+// validateConfigPath ensures the config path is safe and within expected bounds
+func validateConfigPath(path string) error {
+	cleanPath := filepath.Clean(path)
+	// Only allow files within testdata directory
+	if !filepath.HasPrefix(cleanPath, "testdata/") && cleanPath != "testdata/sample_config.json" {
+		return fmt.Errorf("invalid config path: %s", path)
+	}
+	return nil
+}
+
 func main() {
 	cfgPath := "testdata/sample_config.json"
+
+	// Validate config path to prevent path traversal attacks
+	if err := validateConfigPath(cfgPath); err != nil {
+		log.Fatalf("config path validation failed: %v", err)
+	}
+
 	b, err := os.ReadFile(cfgPath)
 	if err != nil {
 		log.Fatalf("failed to read config: %v", err)
